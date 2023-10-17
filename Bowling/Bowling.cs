@@ -13,15 +13,21 @@
                 if (results[i] == 'X' && i < 10)
                 {
                     score += 10;
-                    score += ParseScore(results, i + 1);
-                    score += ParseScore(results, i + 2);
+                    if (!IsBonusThrow(results, i))
+                    {
+                        score += ParseScore(results, i + 1);
+                        score += ParseScore(results, i + 2);
+                    }
                 }
                 else if (results[i] == '/')
                 {
                     // sum up self
                     score += 10 - ParseScore(results, i - 1);
-                    // add next
-                    score += ParseScore(results, i + 1);
+                    if (!IsBonusThrow(results, i))
+                    {
+                        // add next
+                        score += ParseScore(results, i + 1);
+                    }
                 }
                 else
                 {
@@ -80,6 +86,20 @@
             if (results[i] == 'X') return 10;
             if (results[i] == '/') return 10 - ParseScore(results, i - 1);
             return int.Parse(results[i].ToString());
+        }
+
+        private static bool IsBonusThrow(string results, int i)
+        {
+            int length = results.Length;
+            if (i >= length - 2 && results[length - 2] == 'X')
+            {
+                return true;
+            }
+            if (i == length - 1 && results[length - 1] == '/')
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
