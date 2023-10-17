@@ -11,7 +11,7 @@ namespace Bowling.Tests
         [InlineData("1- 1- 1- 1- 1- 1- 1- 1- 1- 1-", 10)]
         [InlineData("12 34 5- -- 7- -8 -9 9- 11 54", 59)]
         public void TestSimple(string inp, int result)
-        {           
+        {
             b.CalculateScore(inp).Should().Be(result);
         }
 
@@ -45,6 +45,7 @@ namespace Bowling.Tests
         [InlineData("X X X -1 5- -- -- -- -- -- ", 67)]
         [InlineData("X X X 1- 5- -- -- -- -- -- ", 68)]
         [InlineData("X X X 11 5- -- -- -- -- -- ", 70)]
+        [InlineData("X X X X X X X X X XXX ", 300)]
         public void TestStrike(string inp, int result)
         {
             b.CalculateScore(inp).Should().Be(result);
@@ -80,6 +81,22 @@ namespace Bowling.Tests
         [InlineData("-- -- -- -- -- -- -- -- -- XX5", 25)]
         [InlineData("-- -- -- -- -- -- -- -- -- XXX", 30)]
         public void TestEnd(string inp, int result)
+        {
+            b.CalculateScore(inp).Should().Be(result);
+        }
+
+        //ChatGPT suggested test cases, verified by https://www.bowlinggenius.com/
+        [Theory()]
+        [InlineData("X X X X X X X X X -1", 242)]
+        [InlineData("-- X 5/ -- X 5/ -- X 5/ --", 90)]
+        [InlineData("-- -- -- -- -- -- -- -- -- X5/", 20)]
+        [InlineData("-- -- -- -- -- -- -- -- -- 5/X", 20)]
+        [InlineData("X 5/ X 5/ X 5/ X 5/ X 5/X", 200)]
+        [InlineData("X -- 5/ -- -- -- -- -- -- --", 20)]
+        [InlineData("5/ -- X -- -- -- -- -- -- --", 20)]
+        [InlineData("5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/X", 155)]
+        [InlineData("5/ X X X X X X X X 5/5", 260)]
+        public void TestChatGPTSuggestions(string inp, int result)
         {
             b.CalculateScore(inp).Should().Be(result);
         }
