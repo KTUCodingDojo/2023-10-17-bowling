@@ -9,25 +9,25 @@
             int score = 0;
             for (int i = 0; i < results.Length; i++)
             {
-                // Strike
-                if (results[i] == 'X' && i < 10)
+                if (IsBonusThrow(results, i))
                 {
-                    score += 10;
-                    if (!IsBonusThrow(results, i))
-                    {
-                        score += ParseScore(results, i + 1);
-                        score += ParseScore(results, i + 2);
-                    }
+                    continue;
+                }
+
+                // Strike
+                if (results[i] == 'X')
+                {
+                    score += ParseScore(results, i);
+                    score += ParseScore(results, i + 1);
+                    score += ParseScore(results, i + 2);
                 }
                 else if (results[i] == '/')
                 {
                     // sum up self
-                    score += 10 - ParseScore(results, i - 1);
-                    if (!IsBonusThrow(results, i))
-                    {
-                        // add next
-                        score += ParseScore(results, i + 1);
-                    }
+                    score += ParseScore(results, i);
+                    // add next
+                    score += ParseScore(results, i + 1);
+
                 }
                 else
                 {
@@ -91,11 +91,11 @@
         private static bool IsBonusThrow(string results, int i)
         {
             int length = results.Length;
-            if (i >= length - 2 && results[length - 2] == 'X')
+            if (i >= length - 2 && results[length - 3] == 'X')
             {
                 return true;
             }
-            if (i == length - 1 && results[length - 1] == '/')
+            if (i == length - 1 && results[length - 2] == '/')
             {
                 return true;
             }
